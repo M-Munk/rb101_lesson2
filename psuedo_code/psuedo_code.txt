@@ -1,0 +1,32 @@
+# take in 2 integers and produce the sum of them
+
+START
+  SET result = num1 + num2
+  return result
+end
+
+# take in an array of strings and return a single string of the concatenated strings
+
+START
+  SET output_string = ""
+  SET iterator = 0
+  WHILE iterator <= length of string_array
+    SET output_string = output_string + value within string_array at space "iterator"
+    iterator = iterator + 1
+  return output_string
+END
+
+# take in an array of integers and return a new array with every other element - assume every other starts with the first element and skips the odd numbered index elements
+
+START
+  SET output_array = value within integer_array at space 1
+  SET iterator = 1
+  WHILE iterator <= length of integer_array
+    IF iterator % 2 == 0
+      SET next value in output_array = value within integer_array at space "iterator"
+    ELSE
+      go to the next iterattion
+    iterator = iterator + 1
+  return output_array
+END
+    
