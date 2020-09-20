@@ -1,6 +1,6 @@
 1. Is there a better way to validate that the user has input a number?
 
-I would check if `number.to_i().to_s == number` which would allow for entering zero.  This would necessitate a check for a zero divisor on the divide operation, or you will get a DIVIDEBYZERO error.
+I would check if `number.to_i().to_s() == number` which would allow for entering zero.  This would necessitate a check for a zero divisor on the divide operation, or you will get a DIVIDEBYZERO error.
 
 2. It looks like you can call `to_i` or `to_f` to convert strings to integers and floats, respectively.  Look up the `String#to_i` and `String#to_f` documentation in Ruby docs and look at their various examples and use cases.
 
@@ -47,6 +47,22 @@ The Kernel instance methods are documented in class Object while the module meth
 6.  There are lots of messages sprinkled throughout the program. Could we move them into some configuration file and access by key? This would allow us to manage the messages much easier, and we could even internationalize the messages.  This is just a thought experiment, and no need to code this up.
 
 You could probably create some type of hash in a file and import it into your calculator program, and then access the values of the text by the key in the hash.
+
+Calculator Bonus Feature: Multilingual
+
+If I were going to provide multiple translations, I would create a different YAML file for each language translation using the same keys as the one that is already set up & just changing the value to the appropriate language. I would add a message at the beginning of the file outside of the main program loop & before asking for the user's name => this message would ask for language choice. 
+
+Say for example:
+
+Which Language do you prefer?
+1 - English
+2 - Espanol
+3 - Francais
+etc
+
+I would then set a variable "language" = to the number that the user inputs.  I would then write a case statment and set the constant MESSAGES = to the appropriate language file. 
+
+This method would allow me to not have to change any of the MESSAGE['key'] values in the existing program, but would allow me to provide multiple translations.  
 
 
 
