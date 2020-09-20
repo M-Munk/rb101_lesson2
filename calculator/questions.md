@@ -64,6 +64,8 @@ I would then set a variable "language" = to the number that the user inputs.  I 
 
 This method would allow me to not have to change any of the MESSAGE['key'] values in the existing program, but would allow me to provide multiple translations.  
 
+I think the drawback of this method would be inability to switch between multiple languages on one run of the calculator because MESSAGES is a constant.
+
 
 
 
