@@ -135,7 +135,7 @@ GET user months or years?
       GET loan_duration_years
         IF loan_duration_years is valid
           SET loan_duration_years
-          SET loan_duration_months = loan_duration_years = 12
+          SET loan_duration_months = loan_duration_years * 12
           BREAK
    IF months?
      LOOP
