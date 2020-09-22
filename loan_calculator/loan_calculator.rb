@@ -15,11 +15,12 @@ def valid_number?(num)
 end
 
 def format_money(num)
-  sprintf('%.2f', num)
+  format('%.2f', num)
 end
 
 prompt('Welcome to the loan calculator')
-prompt('This calculator can determine the monthly payment for a loan based on the APR, length of the loan, and amount borrowed.')
+prompt('This calculator can determine the monthly payment for a loan
+   based on the APR, length of the loan, and amount borrowed.')
 
 loan_amt = ''
 loop do
@@ -73,12 +74,12 @@ end
 prompt('Calculating...')
 
 monthly_interest_rate = (apr_rate.to_f / 100) / 12
-monthly_payment = loan_amt.to_f * (monthly_interest_rate.to_f / (1 - (1 + monthly_interest_rate.to_f)**(-loan_duration_months.to_i)))
+monthly_payment = loan_amt.to_f * (monthly_interest_rate.to_f /
+  (1 - (1 + monthly_interest_rate.to_f)**(-loan_duration_months.to_i)))
 total_payment = monthly_payment.to_f * loan_duration_months.to_i
 interest_payment = total_payment - loan_amt.to_f
 
 prompt("Your monthly payment is $#{format_money(monthly_payment)}")
 prompt("You have a total of #{loan_duration_months} monthly payments")
-prompt("The total amount you will pay over the life of the loan is $#{format_money(total_payment)}")
-prompt("The total amount you will pay in interest over the life of the loan is $#{format_money(interest_payment)}")
-
+prompt("The total amount you will pay is $#{format_money(total_payment)}")
+prompt("The total amount of interest is $#{format_money(interest_payment)}")
