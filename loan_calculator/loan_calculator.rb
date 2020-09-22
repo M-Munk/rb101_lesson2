@@ -11,11 +11,19 @@ def float?(num)
 end
 
 def valid_number?(num)
-  integer?(num) || float?(num)
+  (integer?(num) || float?(num)) && (num.to_f >= 0.0)
 end
 
 def format_money(num)
   format('%.2f', num)
+end
+
+def payment(interest, duration, amount)
+  if interest.to_f == 0.0
+    amount.to_f / duration.to_i
+  else 
+    (amount.to_f )* ((interest.to_f) / (1 - (1 + interest.to_f)**(-duration.to_i)))
+  end
 end
 
 loop do
@@ -38,6 +46,7 @@ loop do
   apr_rate = ''
   loop do
     prompt('Please enter the APR rate of your loan:')
+    prompt('example: 5 for 5%, 0.5 for 0.5%')
     apr_rate = gets.chomp
     if valid_number?(apr_rate)
       break
@@ -77,8 +86,7 @@ loop do
   prompt('Calculating...')
 
   monthly_interest_rate = (apr_rate.to_f / 100) / 12
-  monthly_payment = loan_amt.to_f * (monthly_interest_rate.to_f /
-    (1 - (1 + monthly_interest_rate.to_f)**(-loan_duration_months.to_i)))
+  monthly_payment = payment(monthly_interest_rate, loan_duration_months, loan_amt)
   total_payment = monthly_payment.to_f * loan_duration_months.to_i
   interest_payment = total_payment - loan_amt.to_f
 
