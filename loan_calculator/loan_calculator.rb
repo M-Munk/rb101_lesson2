@@ -18,7 +18,11 @@ def format_money(num)
   format('%.2f', num)
 end
 
-def payment(interest, duration, amount)
+def print_error
+  prompt('That doesn\'t look quite right')
+end
+
+def calculate_monthly_payment(interest, duration, amount)
   if interest.to_f == 0.0
     amount.to_f / duration.to_i
   else
@@ -26,23 +30,28 @@ def payment(interest, duration, amount)
   end
 end
 
-loop do
+def display_welcome
   system("clear") || system("cls")
   prompt('Welcome to the loan calculator')
-  prompt('This calculator can determine the monthly payment for a loan
-     based on the APR, length of the loan, and amount borrowed.')
+  prompt('This calculator can determine the monthly payment for a loan')
+  prompt('based on the APR, length of the loan, and amount borrowed.')
+end
 
-  loan_amt = ''
+def get_loan_amt
+  loan = ''
   loop do
     prompt('Please enter the amount borrowed:')
-    loan_amt = gets.chomp
-    if valid_number?(loan_amt)
+    loan = gets.chomp
+    if valid_number?(loan) && loan.to_f != 0.0
       break
     else
-      prompt('That doesn\'t look quite right')
+      print_error
     end
   end
+  loan
+end
 
+def get_apr
   apr_rate = ''
   loop do
     prompt('Please enter the APR rate of your loan:')
@@ -51,51 +60,100 @@ loop do
     if valid_number?(apr_rate)
       break
     else
-      prompt('That doesn\'t look quite right')
+      print_error
     end
   end
+  apr_rate
+end
 
-  loan_dur_months = ''
-  loan_dur_years = ''
-  prompt('Would you like to enter loan duration in years?
-     y = years, n = months')
-  answer = gets.chomp
-  if answer.downcase == 'y'
-    loop do
-      prompt('please enter loan duration in years:')
-      loan_dur_years = gets.chomp
-      if integer?(loan_dur_years)
-        loan_dur_months = 12 * loan_dur_years.to_i
-        break
-      else
-        prompt('That doesn\'t look quite right')
-      end
-    end
-  else
-    loop do
-      prompt('please enter the loan duration in months:')
-      loan_dur_months = gets.chomp
-      if integer?(loan_dur_months)
-        break
-      else
-        prompt('That doesn\'t look quite right')
-      end
+def print_dur_menu
+  prompt('How would you like to enter loan duration?')
+  prompt('1 => years')
+  prompt('2 => months')
+end
+
+def get_duration
+  duration = ''
+  loop do
+    print_dur_menu
+    answer = gets.chomp
+    if answer == '1'
+      duration = calculate_loan_dur_years()
+      break
+    elsif answer == '2'
+      duration = calculate_loan_dur_months()
+      break
+    else
+      print_error
     end
   end
+  duration
+end
 
+def calculate_loan_dur_months
+  prompt('Please enter loan duration in months:')
+  answer = ''
+  loop do
+    answer = gets.chomp
+    if integer?(answer) && answer.to_i != 0
+      break
+    else
+      print_error
+    end
+  end
+  answer
+end
+
+def calculate_loan_dur_years
+  prompt('Please enter loan duration in years:')
+  answer = ''
+  loop do
+    answer = gets.chomp
+    if integer?(answer) && answer.to_i != 0
+      break
+    else
+      print_error
+    end
+  end
+  answer.to_i * 12
+end
+
+def calculate_monthly_interest_rate(apr)
+  (apr.to_f / 100) / 12
+end
+
+def calculate_total_payment(monthly_amt, num_months)
+  monthly_amt.to_f * num_months.to_i
+end
+
+def calculate_total_interest(amt_borrowed, amt_paid)
+  amt_paid.to_f - amt_borrowed.to_i
+end
+
+def print_results(payment, duration, total, interest)
   prompt('Calculating...')
+  prompt("Your monthly payment is $#{format_money(payment)}")
+  prompt("You have a total of #{duration} monthly payments")
+  prompt("The total amount you will pay is $#{format_money(total)}")
+  prompt("The total amount of interest is $#{format_money(interest)}")
+end
 
-  monthly_interest_rate = (apr_rate.to_f / 100) / 12
-  monthly_payment = payment(monthly_interest_rate, loan_dur_months, loan_amt)
-  total_payment = monthly_payment.to_f * loan_dur_months.to_i
-  interest_payment = total_payment - loan_amt.to_f
-
-  prompt("Your monthly payment is $#{format_money(monthly_payment)}")
-  prompt("You have a total of #{loan_dur_months} monthly payments")
-  prompt("The total amount you will pay is $#{format_money(total_payment)}")
-  prompt("The total amount of interest is $#{format_money(interest_payment)}")
-
+def play_again?
   prompt('Would you like to perform another calculation? (y/n)')
   answer = gets.chomp
-  break unless answer.downcase.start_with? 'y'
+  answer.downcase == 'y' || answer.downcase == 'yes' ? true : false
+end
+
+loop do
+  display_welcome
+  loan_amt = get_loan_amt
+  apr_rate = get_apr
+  loan_duration = get_duration
+  monthly_payment =
+    calculate_monthly_payment(calculate_monthly_interest_rate(apr_rate),
+                              loan_duration, loan_amt)
+  total_payment = calculate_total_payment(monthly_payment, loan_duration)
+  interest_payment = calculate_total_interest(loan_amt, total_payment)
+  print_results(monthly_payment, loan_duration, total_payment, interest_payment)
+  break unless play_again?
 end
