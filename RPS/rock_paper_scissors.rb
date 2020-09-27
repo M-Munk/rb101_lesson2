@@ -99,6 +99,8 @@ def print_score(score)
   prompt("# of Ties - #{score[:ties]}")
   if score[:player] > score[:computer]
     prompt("You win this round!")
+  elsif score[:player] == score[:computer]
+    prompt("You are tied with the computer.")
   else
     prompt("Sorry, the computer wins this round.")
   end
