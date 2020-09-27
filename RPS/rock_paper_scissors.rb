@@ -1,28 +1,27 @@
 VALID_CHOICES = %w(rock paper scissors spock lizard)
 
+WIN_CONDITIONS = {
+  'rock' => ['scissors', 'lizard'],
+  'paper' => ['rock', 'spock'],
+  'scissors' => ['paper', 'lizard'],
+  'spock' => ['scissors', 'rock'],
+  'lizard' => ['spock', 'paper']
+}
+
 def prompt(message)
   Kernel.puts("==> #{message}")
 end
 
-def greeting()
+def greeting
   prompt("Welcome to Rock, Paper, Scissors, Spock, Lizard")
   prompt("Good Luck!")
 end
 
-def win?(first, second)
-  (first == 'rock' && second == 'scissors') ||
-    (first == 'paper' && second == 'rock') ||
-    (first == 'scissors' && second == 'paper') ||
-    (first == 'paper' && second == 'spock') ||
-    (first == 'rock' && second == 'lizard') ||
-    (first == 'lizard' && second == 'spock') ||
-    (first == 'lizard' && second == 'paper') ||
-    (first == 'spock' && second == 'scissors') ||
-    (first == 'spock' && second == 'rock') ||
-    (first == 'scissors' && second == 'lizard') 
+def win?(first, second, win_list)
+  win_list[first].include?(second)
 end
 
-def get_player_choice()
+def get_player_choice
   player_choice = ''
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')}.")
@@ -41,22 +40,22 @@ def display_choices(player, computer)
 end
 
 def display_results(player, computer)
-  if win?(player, computer)
+  if win?(player, computer, WIN_CONDITIONS)
     prompt("You won!")
-  elsif win?(computer, player)
+  elsif win?(computer, player, WIN_CONDITIONS)
     prompt("Computer won!")
   else
     prompt("You tied!")
   end
 end
 
-def play_again?()
+def play_again?
   prompt("Do you want to play again?")
   answer = Kernel.gets().chomp()
-  answer.downcase.start_with?('y') ? true: false
+  answer.downcase.start_with?('y') ? true : false
 end
 
-# main program 
+# main program
 
 loop do
   greeting
