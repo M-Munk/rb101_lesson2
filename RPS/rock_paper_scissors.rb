@@ -8,6 +8,12 @@ WIN_CONDITIONS = {
   'lizard' => ['spock', 'paper']
 }
 
+scoreboard = {
+  :player => 0,
+  :computer => 0,
+  :ties => 0
+}
+
 def prompt(message)
   Kernel.puts("==> #{message}")
 end
@@ -64,6 +70,40 @@ def play_again?
   answer.downcase.start_with?('y') ? true : false
 end
 
+def update_score(score, human, computer, win_list)
+  if win?(human, computer, win_list)
+    score[:player] += 1
+  elsif win?(computer, human, win_list)
+    score[:computer] += 1
+  else
+    score[:ties] += 1
+  end
+end
+
+def check_score(score)
+  if score[:player] == 5
+    prompt("You win this round!")
+  elsif score[:computer]  == 5
+    prompt("The computer wins this round!")
+  end
+end
+
+def game_over?(score)
+  score[:player] == 5 || score[:computer] == 5
+end
+
+def print_score(score)
+  prompt("The final score is:")
+  prompt("Player - #{score[:player]}")
+  prompt("Computer - #{score[:computer]}")
+  prompt("# of Ties - #{score[:ties]}")
+  if score[:player] > score[:computer]
+    prompt("You win this round!")
+  else
+    prompt("Sorry, the computer wins this round.")
+  end
+end
+
 # main program
 
 loop do
@@ -72,6 +112,8 @@ loop do
   computer_choice = VALID_CHOICES.sample()
   display_choices(choice, computer_choice)
   display_results(choice, computer_choice)
+  update_score(scoreboard, choice, computer_choice, WIN_CONDITIONS)
+  break if game_over?(scoreboard)
   break unless play_again?
 end
-prompt("Thank you for playing. Good bye!")
+print_score(scoreboard)
