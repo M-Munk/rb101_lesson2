@@ -112,7 +112,7 @@ end
 display_greeting
 loop do
   choice = get_player_choice
-  computer_choice = VALID_CHOICES.sample()
+  computer_choice = VALID_CHOICES.sample
   display_choices(choice, computer_choice)
   display_results(choice, computer_choice)
   update_score(scoreboard, choice, computer_choice, WIN_CONDITIONS)
