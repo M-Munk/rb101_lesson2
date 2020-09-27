@@ -38,7 +38,7 @@ def get_player_choice
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')}.")
     prompt("Or use short form: #{SHORT_CHOICES.join(', ')}")
-    player_choice = Kernel.gets().chomp().downcase
+    player_choice = Kernel.gets.chomp.downcase
     if VALID_CHOICES.include?(player_choice)
       break
     elsif SHORT_CHOICES.include?(player_choice)
@@ -67,7 +67,7 @@ end
 
 def play_again?
   prompt("Do you want to play again?")
-  answer = Kernel.gets().chomp()
+  answer = Kernel.gets.chomp
   answer.downcase.start_with?('y') ? true : false
 end
 
