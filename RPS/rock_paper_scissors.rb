@@ -1,5 +1,5 @@
 VALID_CHOICES = %w(rock paper scissors spock lizard)
-
+SHORT_CHOICES = %w(r p s k l)
 WIN_CONDITIONS = {
   'rock' => ['scissors', 'lizard'],
   'paper' => ['rock', 'spock'],
@@ -21,12 +21,21 @@ def win?(first, second, win_list)
   win_list[first].include?(second)
 end
 
+def convert_player_choice(answer)
+  idx = SHORT_CHOICES.index(answer)
+  VALID_CHOICES[idx]
+end
+
 def get_player_choice
   player_choice = ''
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')}.")
+    prompt("Or use short form: #{SHORT_CHOICES.join(', ')}")
     player_choice = Kernel.gets().chomp()
     if VALID_CHOICES.include?(player_choice)
+      break
+    elsif SHORT_CHOICES.include?(player_choice)
+      player_choice = convert_player_choice(player_choice)
       break
     else
       prompt("That's not a valid choice")
@@ -59,7 +68,7 @@ end
 
 loop do
   greeting
-  choice = get_player_choice()
+  choice = get_player_choice
   computer_choice = VALID_CHOICES.sample()
   display_choices(choice, computer_choice)
   display_results(choice, computer_choice)
