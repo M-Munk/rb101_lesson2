@@ -9,9 +9,9 @@ WIN_CONDITIONS = {
 }
 
 scoreboard = {
-  :player => 0,
-  :computer => 0,
-  :ties => 0
+  player: 0,
+  computer: 0,
+  ties: 0
 }
 
 def prompt(message)
@@ -83,7 +83,7 @@ end
 def check_score(score)
   if score[:player] == 5
     prompt("You win this round!")
-  elsif score[:computer]  == 5
+  elsif score[:computer] == 5
     prompt("The computer wins this round!")
   end
 end
