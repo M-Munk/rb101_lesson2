@@ -18,7 +18,8 @@ def prompt(message)
   Kernel.puts("==> #{message}")
 end
 
-def greeting
+def display_greeting
+  system("clear") || system("cls")
   prompt("Welcome to Rock, Paper, Scissors, Spock, Lizard")
   prompt("Good Luck!")
 end
@@ -108,8 +109,8 @@ end
 
 # main program
 
+display_greeting
 loop do
-  greeting
   choice = get_player_choice
   computer_choice = VALID_CHOICES.sample()
   display_choices(choice, computer_choice)
