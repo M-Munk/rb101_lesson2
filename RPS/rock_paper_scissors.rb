@@ -21,6 +21,7 @@ end
 def display_greeting
   system("clear") || system("cls")
   prompt("Welcome to Rock, Paper, Scissors, Spock, Lizard")
+  prompt("Unless you quit early, first player to 5 wins!")
   prompt("Good Luck!")
 end
 
@@ -66,9 +67,9 @@ def display_results(player, computer)
 end
 
 def play_again?
-  prompt("Do you want to play again?")
-  answer = Kernel.gets.chomp
-  answer.downcase.start_with?('y') ? true : false
+  prompt("Do you want to play again? (y/n)")
+  answer = gets.chomp
+  answer.downcase == 'y' || answer.downcase == 'yes' ? true : false
 end
 
 def update_score(score, human, computer, win_list)
@@ -107,6 +108,13 @@ def print_score(score)
   end
 end
 
+def display_current_score(score)
+  prompt("The current score is:")
+  prompt("Player - #{score[:player]}")
+  prompt("Computer - #{score[:computer]}")
+  prompt("# of Ties - #{score[:ties]}")
+end
+
 # main program
 
 display_greeting
@@ -118,5 +126,7 @@ loop do
   update_score(scoreboard, choice, computer_choice, WIN_CONDITIONS)
   break if game_over?(scoreboard)
   break unless play_again?
+  system("clear") || system("cls")
+  display_current_score(scoreboard)
 end
 print_score(scoreboard)
